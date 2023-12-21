@@ -146,7 +146,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'hoangdieu224466@gmail.com'
-EMAIL_HOST_PASSWORD = 'byefchrkihqcqpid'
+EMAIL_HOST_PASSWORD = 'ẩn ròi:))'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -157,8 +157,8 @@ SITE_ID = 1
 VNPAY_RETURN_URL = 'http://localhost:8000/payment/payment_return'
 VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
 VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction'
-VNPAY_TMN_CODE = 'FX8NWKOG'
-VNPAY_HASH_SECRET_KEY = 'KZCUUHQAOUQGRXZDVXFFGWDTVGLKJZDU'
+VNPAY_TMN_CODE = 'ẩn ròi:))'
+VNPAY_HASH_SECRET_KEY = 'ẩn ròi:))'
 
 
 MQTT_SERVER = "mqtt-dashboard.com"
