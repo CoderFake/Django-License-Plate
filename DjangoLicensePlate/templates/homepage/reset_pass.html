@@ -1,0 +1,71 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block cssblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/styles/reset_pass.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="reset-password-box">
+        <h2>RESET MẬT KHẨU</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if success_message %}
+                <div class="messages">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class ="notice">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="button-container">
+                    <a href="{% url 'login' %}" class="effect submit-button">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Đăng nhập
+                    </a>
+                </div>
+            {% else %}
+                 <div class="messages">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class ="notice">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="user-box">
+                    {{ form.username }}
+                    {{ form.username.label_tag }}
+                </div>
+                <div class="user-box">
+                    {{ form.new_password }}
+                    {{ form.new_password.label_tag }}
+                </div>
+                <div class="user-box">
+                    {{ form.confirm_new_password }}
+                    {{ form.confirm_new_password.label_tag }}
+                </div>
+                <div class="demand">
+                    <p>-Mật khẩu tối thiểu 8 kí tự.</p>
+                    <p>-Mật khẩu không chứa tên đăng nhập.</p>
+                    <p>-Gồm các chữ cái thường, in hoa, số và kí tự đặc biệt.</p>
+                </div>
+                <div class="button-container">
+                    <a href="" class="effect submit-button">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <input type="submit" value="Confirm">
+                    </a>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+{% endblock %}
+{% block jsblock %}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+{% endblock %}

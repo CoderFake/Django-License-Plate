@@ -1,0 +1,114 @@
+{% if request.user.is_authenticated %}
+    <div class="header">
+        <ul class ="menu">
+            <li class="nav-item logo">
+                <a class="nav-link logo" href="{% url 'main' %}" > <i class="fas fa-car logo-icon"></i>&nbsp;PARKING MANAGEMENT SYSTEMS </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'main' %}" ><i class="fas fa-tachometer-alt"> </i>&nbsp;Dashboad</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'main' %}" ><i class="far fa-map"></i>&nbsp;Vị trí đỗ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'main' %}" ><i class="fas fa-chart-line"></i>&nbsp;Thống kê</a>
+            </li>
+            {% if  request.user.is_superuser %}
+                <li class="nav-item setting1 diriection">
+                    <a class="nav-link" href="{% url 'setting_info' %}" ><i class="fas fa-tools"></i>&nbsp;Cài đặt &nbsp;<span class="rot fa fa-caret-right"></span></a>
+                    <ul class="subnav1">
+                        <li><a class="subnav-link" href="{% url 'setting_info' %}" ><i class="far fa-id-card"></i>&nbsp;Thông tin cá nhân</a></li>
+                        <li><a class="subnav-link" href="{% url 'camera' %}" ><i class="fas fa-camera"></i>&nbsp;Cấu hình Camera</a></li>
+                        <li><a class="subnav-link" href="{% url 'payment_setting' %}" ><i class="fas fa-credit-card"></i>&nbsp;Cài đặt thanh toán</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'setting_info' %}" ><i class="fas fa-tools"></i>&nbsp;Cài đặt &nbsp;</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}" ><i class="fas fa-lock"></i>&nbsp;Thoát</a>
+            </li>
+        </ul>
+    </div>
+        <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+        <label for="openSidebarMenu" class="sidebarIconToggle">
+            <div class="spinner diagonal part-1"></div>
+            <div class="spinner horizontal"></div>
+            <div class="spinner diagonal part-2"></div>
+        </label>
+    <div id="sidebarMenu">
+        <ul class="sidebarMenuInner">
+            <li class="nav-item horizontal">
+                <a class="nav-link" href="{% url 'main' %}" ><i class="fas fa-tachometer-alt"> </i>&nbsp;Dashboad</a>
+            </li>
+            <li class="nav-item horizontal">
+                <a class="nav-link" href="{% url 'main' %}" ><i class="far fa-map"></i>&nbsp;Vị trí đỗ</a>
+            </li>
+            <li class="nav-item horizontal">
+                <a class="nav-link" href="{% url 'main' %}" ><i class="fas fa-chart-line"></i>&nbsp;Thống kê</a>
+            </li>
+            {% if  request.user.is_superuser %}
+                <li onclick= showSubnav() class="nav-item settings horizontal">
+                    <p class="nav-link"><i class="fas fa-tools"></i>&nbsp;Cài đặt &nbsp;<i style="color:#fff;" class="rot fa fa-caret-right"></i></p>
+                    <ul class="subnav">
+                        <li><a class="subnav-link" href="{% url 'setting_info' %}" ><i class="far fa-id-card"></i>&nbsp;Thông tin cá nhân</a></li>
+                        <li><a class="subnav-link" href="{% url 'camera' %}" ><i class="fas fa-camera"></i>&nbsp;Cấu hình Camera</a></li>
+                        <li><a class="subnav-link" href="{% url 'payment_setting' %}" ><i class="fas fa-credit-card"></i>&nbsp;Cài đặt thanh toán</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li class="nav-item horizontal">
+                    <a class="nav-link" href="{% url 'setting_info' %}" ><i class="fas fa-tools"></i>&nbsp;Cài đặt &nbsp;</a>
+                </li>
+            {% endif %}
+            <li class="nav-item horizontal ext">
+                <a class="nav-link" href="{% url 'logout' %}" ><i class="fas fa-lock"></i>&nbsp;Thoát</a>
+            </li>
+        </ul>
+    </div>
+{% else %}
+        <div class="header">
+        <ul class = "menu">
+            <li class="nav-item logo">
+                <a class="nav-link logo" href="{% url 'index' %}" > <i class="fas fa-car logo-icon"></i>&nbsp;PARKING MANAGEMENT SYSTEMS </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'index' %}" ><i class="fa fa-home"></i>&nbsp;Trang chủ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'payment' %}" ><i class="fas fa-edit"></i>&nbsp;Đăng kí vé tháng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'expired' %}" ><i class="far fa-calendar-alt"></i>&nbsp;Xem hạn vé</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}" ><i class="fas fa-lock"></i>&nbsp;Đăng nhập</a>
+            </li>
+        </ul>
+    </div>
+        <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+        <label for="openSidebarMenu" class="sidebarIconToggle">
+            <div class="spinner diagonal part-1"></div>
+            <div class="spinner horizontal"></div>
+            <div class="spinner diagonal part-2"></div>
+        </label>
+    <div id="sidebarMenu">
+        <ul class="sidebarMenuInner">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'index' %}" ><i class="fa fa-home"></i>&nbsp;Trang chủ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'payment' %}" ><i class="fas fa-edit"></i>&nbsp;Đăng kí vé tháng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'expired' %}" ><i class="far fa-calendar-alt"></i>&nbsp;Xem hạn vé</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}" ><i class="fas fa-lock"></i>&nbsp;Đăng nhập</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}
+    <ul class="notifications"></ul>

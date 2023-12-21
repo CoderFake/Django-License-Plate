@@ -1,0 +1,109 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block cssblock %}
+    <link rel="stylesheet" type="text/css" href="{% static "homepage/styles/expired.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="col-lg-12">TÌM KIẾM BIỂN SỐ </h2>
+        <form class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" name="license_plate"
+                       placeholder="Nhập biển số xe (ví dụ: 30A12345)" value="{{ license_plate }}"/>
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            </div>
+             <div class="messages">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class ="notice">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% if page_obj %}
+             <div class="table-container">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã hóa đơn</th>
+                                <th scope="col">Biển số xe</th>
+                                <th scope="col">Ngày mua</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col"> Ngày Hết hạn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in page_obj %}
+                            <tr>
+                                <td>{{ ticket.order_id }}</td>
+                                <td>{{ ticket.license_plate }}</td>
+                                <td>{{ ticket.time_buy|date:"d/m/Y H:i:s" }}</td>
+                                <td>{{ ticket.price|floatformat:0 }}</td>
+                                <td>{{ ticket.expired|date:"d/m/Y H:i:s" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 row">
+                {% if page_obj.has_other_pages %}
+                    <div class="col-lg-12">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a href="" data-page="1" class="btn btn-outline-secondary mb-4 post-link" style ="border-radius:2px; border: 1px solid #d3d3d3;overflow: hidden; text-overflow: ellipsis;">
+                                    <div class="text-nowrap">Trang đầu</div></a>
+                                </li>
+                                <li class="page-item"><a class="page-link post-link" href="" data-page="{{ page_obj.previous_page_number }}"><i style="margin-right:0px;" class="fas fa-angle-double-left"></i></a></li>
+                            {% else %}
+                                <li class="page-item disabled"></li>
+                            {% endif %}
+                            {% if page_obj.number|add:'-2' > 1 %}
+                                <li><a class ="page-link post-link" href="" data-page="{{ page_obj.number|add:'-2'}}">&hellip;</a></li>
+                            {% endif %}
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="page-item active"><span class="page-link">{{ i }}<span class="sr-only"></span></span></li>
+                                {% elif i > page_obj.number|add:'-2' and  i < page_obj.number|add:'2' %}
+                                     <li class="page-item"><a class="page-link post-link" href="" data-page="{{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
+                                <li><a class="page-link post-link" href="" data-page="{{ page_obj.number|add:'-2' }}">&hellip;</a></li>
+                                <li><a class="post-link" href="" data-page="{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link post-link" href="" data-page="{{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link post-link" href="" data-page="{{ page_obj.next_page_number }}"><i style="margin-right:0px;" class="fas fa-angle-double-right"></i></a></li>
+                                <li class="page-item"><a href="" data-page="{{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary mb-4 post-link" style ="border-radius:2px; border: 1px solid #d3d3d3;overflow: hidden; text-overflow: ellipsis;">
+                                    <div class="text-nowrap">Trang cuối</div></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block jsblock %}
+    <script>
+    $(document).ready(function() {
+        $(".post-link").on("click", function(e) {
+            e.preventDefault();
+            var pageValue = $(this).data("page");
+            var currentUrl = window.location.href;
+            var newUrl = currentUrl.includes('page=') ? currentUrl.replace(/page=[^&]*/, 'page=' + pageValue) : currentUrl + '&page=' + pageValue;
+            window.location.href = newUrl;
+        });
+    });
+    </script>
+    <script src ="{% static 'homepage/js/expired.js' %}"></script>
+{% endblock %}
+

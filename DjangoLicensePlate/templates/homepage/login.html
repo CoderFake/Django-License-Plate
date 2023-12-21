@@ -1,0 +1,54 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block cssblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/styles/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    </div> 
+    <div class="login-box">
+        <h2>ĐĂNG NHẬP</h2>
+        <p>dành cho nhân viên hệ thống</p>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class ="notice">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="user-box">
+                {{ form.username }}
+                {{ form.username.label_tag }}
+            </div>
+            <div class="user-box">
+                {{ form.password }}
+                {{ form.password.label_tag }}
+            </div>
+            <div class="forgot-password">
+                <a href="{% url 'confirm_reset' %}">Quên mật khẩu?</a>
+            </div>
+            <div class="button-container">
+                <a href="" class="effect-submit-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <input type="submit" value="Login">
+                </a>
+                <a href="{% url 'index' %}" class="effect exit-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Exit
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block jsblock %}
+{% endblock %}

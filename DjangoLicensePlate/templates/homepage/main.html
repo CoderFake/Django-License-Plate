@@ -1,0 +1,243 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block cssblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/styles/main.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" style="margin-top:70px;margin-bottom:60px;height:100%;">
+        <div class="row">
+            <div class="col-lg-12 time">
+                <div id="current-time"></div>
+            </div>
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-lg-12 plate-img">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="enntrance gate">
+                                    <div id="rtsp_in"><img src="{% static 'homepage/images/gate1.png' %}"></div>
+                                </div>
+                                <div class="plate_in">
+                                    <input type="text" name="plate_in">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                 <div class="exit gate">
+                                     <div id="rtsp_out"><img src="{% static 'homepage/images/gate2.png' %}"></div>
+                                </div>
+                                <div class="plate_out">
+                                    <input type="text" name="plate_out">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 infor">
+                        <h1>Tìm kiếm thông tin xe:</h1>
+                        <div class="search">
+                            <input type="text" placeholder=" Nhập biển số">
+                            <input type="submit" value="Tìm kiếm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Số lượng xe vào:</p>
+                                <input type="text" name="car_in_out"  readonly>
+                            </div>
+                            <div class="col-md-12">
+                                <p>Số lượng xe ra:</p>
+                                 <input type="text" name="car_out" readonly>
+                            </div>
+                            <div class="col-md-12">
+                                <p>Số lượng xe trong bãi:</p>
+                                 <input type="text" name="car_in" readonly>
+                            </div>
+                            <div class="col-md-12">
+                                <p>Số lượng vị trí trống:</p>
+                                 <input type="text" name="empty" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 img">
+                        <img id="plate" src="{% static 'homepage/images/parkinglot.png' %}">
+                    </div>
+                    <div class="col-lg-12">
+                         <div class="row">
+                            <div class="col-md-12">
+                                <p>Thời gian vào:</p>
+                                <input type="text" name="time_in" readonly>
+                            </div>
+                             <div class="col-md-12">
+                                <p>Thời gian ra:</p>
+                                 <input type="text" name="time_out" readonly>
+                             </div>
+                             <div class="col-md-12">
+                                <p>Loại vé:</p>
+                                 <input type="text" name="type_ticket" readonly>
+                             </div>
+                             <div class="col-md-12">
+                                <p>Giá vé:</p>
+                                 <input type="text" name="price" readonly>
+                             </div>
+                         </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="custom-btn btn-5"><span>Cho xe qua</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jsblock %}
+    <script>
+        $(function() {
+            var socket = new WebSocket('ws://' + window.location.host + '/ws/main/');
+            var rtsp = -1;
+            sendAjaxRequest();
+            socket.onmessage = function(e) {
+                var data = e.data;
+                if(data){
+                    rtsp = 0;
+                    if(data =="out") rtsp = 1;
+                    else if (data=="check_zone") rtsp = 2;
+                    if(rtsp == 1 || rtsp == 0){
+                        $.ajax({
+                            url: '{% url 'gate' %}',
+                            type: 'POST',
+                            data: {
+                                'gate': rtsp
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                $('#plate').addClass(' hid');
+                                {#var currentTime = "{% now "Y-m-d H:i:s" %}";#}
+                                if(!rtsp){
+                                    $('#rtsp_in').addClass(' hid');
+                                    $('input[name="plate_in"]').val("   BKS: " + response.most_plate);
+                                    var RtspInElement = '<img id="img_in" src="data:image/png;base64,' + response.last_frame + '" alt="Processed Image"/>';
+                                    var RtspInElementCrop = '<img id="img_crop" src="data:image/png;base64,' + response.last_crop_img + '" alt="Processed Image"/>';
+                                    $('.enntrance').html(RtspInElement);
+                                    $('.img').html(RtspInElementCrop);
+                                    $('input[name="time_in"]').val(response.last_time_in);
+                                    $('input[name="time_out"]').val(response.last_time_out);
+                                }
+                                else{
+                                    $('#rtsp_out').addClass(' hid');
+                                    $('input[name="plate_out"]').val("   BKS: " + response.most_plate);
+                                    var RtspInElement = '<img id="img_out" src="data:image/png;base64,' + response.last_frame + '" alt="Processed Image"/>';
+                                    var RtspInElementCrop = '<img id="img_crop" src="data:image/png;base64,' + response.last_crop_img + '" alt="Processed Image"/>';
+                                    $('.exit').html(RtspInElement);
+                                    $('.img').html(RtspInElementCrop);
+                                    $('input[name="price"]').val(response.price);
+                                    if(response.price == "0")  $('input[name="type_ticket"]').val("Vé tháng");
+                                    else $('input[name="type_ticket"]').val("Vé ngày");
+                                     $('input[name="time_in"]').val(response.last_time_in);
+                                    $('input[name="time_out"]').val(response.last_time_out);
+                                    message = JSON.stringify({ 'command': 'sendprice', 'price': $('input[name=price]').val()});
+                                    socket.send(message);
+                                }
+                            },
+                            error: function (error) {
+                                var message = JSON.stringify({ 'command': 'continue' });
+                                socket.send(message);
+                            }
+                        });
+                    }
+                    else if(rtsp == 2){
+                        sendAjaxRequest();
+                    }
+                }
+
+            };
+            function base64ToBlob(base64, mimeType) {
+                const bytes = atob(base64.split(',')[1]);
+                const array = [];
+                for (let i = 0; i < bytes.length; i++) {
+                    array.push(bytes.charCodeAt(i));
+                }
+                return new Blob([new Uint8Array(array)], { type: mimeType });
+            }
+            $('.custom-btn').click(function(){
+                var message = "";
+                if(rtsp == -1) message = JSON.stringify({ 'command': 'continue', 'gate': "all"});
+                else if(!rtsp) message = JSON.stringify({ 'command': 'continue', 'gate': "in"});
+                else message = JSON.stringify({ 'command': 'continue', 'gate': "out"});
+                socket.send(message);
+                var imgData = $('#img_crop').attr('src');
+                var blobData = base64ToBlob(imgData, 'image/png');
+                var formData = new FormData();
+                console.log(imgData);
+                if(rtsp != -1){
+                    $('.img').html('<img id="plate" src="{% static 'homepage/images/parkinglot.png' %}">')
+                    if(!rtsp){
+                        $('.enntrance').html('<div id="rtsp_in"><img src="{% static 'homepage/images/gate1.png' %}"></div>')
+                        formData.append('image', blobData);
+                        formData.append('gate', rtsp);
+                        formData.append('licenseplate', $('input[name=plate_in]').val());
+                        formData.append('time_in', $('input[name=time_in]').val());
+                    }
+                    else{
+                        $('.exit').html('<div id="rtsp_out"><img src="{% static 'homepage/images/gate2.png' %}"></div>')
+                        formData.append('image', blobData);
+                        formData.append('gate', rtsp);
+                        formData.append('licenseplate', $('input[name=plate_out]').val());
+                        formData.append('time_in', $('input[name=time_in]').val());
+                        formData.append('time_out', $('input[name=time_out]').val());
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "savedata" %}',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            console.log('Data sent successfully');
+                        },
+                        error: function(error) {
+                            console.log('Error sending data', error);
+                        }
+                    });
+                }
+                $('#img_crop').remove();
+                $('#img_in').remove();
+                $('#img_out').remove();
+                $('input[name="price"]').val("");
+                $('input[name="type_ticket"]').val("");
+                $('input[name="plate_in"]').val("");
+                $('input[name="plate_out"]').val("");
+                $('input[name="time_in"]').val("");
+                $('input[name="time_out"]').val("");
+                rtsp =-1;
+            });
+            function sendAjaxRequest() {
+                $.ajax({
+                    url: '{% url 'current_parked' %}',
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                        $('input[name="car_in_out"]').val(response.total_car_in_out);
+                        $('input[name="car_in"]').val(response.car_in);
+                        $('input[name="car_out"]').val(response.total_car_out);
+                        $('input[name="empty"]').val(16-response.car_in);
+                    },
+                    error: function(error) {
+                        console.error('Ajax request failed:', error);
+                    }
+                });
+            }
+            socket.onclose = function(e) {
+                console.error('WebSocket closed unexpectedly');
+            };
+        });
+    </script>
+    <script src ="{% static 'homepage/js/main.js' %}"></script>
+{% endblock %}

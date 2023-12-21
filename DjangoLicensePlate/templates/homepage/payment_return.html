@@ -1,0 +1,82 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block cssblock %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="VNPAY">
+    <link rel="stylesheet" type="text/css" href="https://pay.vnpay.vn/lib/vnpay/vnpay.css">
+    <link rel="stylesheet" type="text/css" href="{% static "homepage/styles/payment.css" %}">
+{% endblock %}
+
+{% block content %}
+            <div class="container justify-content-center align-items-center">
+             {% if vnp_ResponseCode == '00' %}
+                 <h2 class="col-lg-12"><b>{{ title }}</b></h2>
+             {% else %}
+                 <h2 class="col-lg-12"><b>{{ title }}</b></h2>
+             {% endif %}
+                <div class ="row" style="width:100%;">
+                    <div class ="col-lg-7 px-0">
+                        <div class="result-form">
+                            <p>Mã đơn hàng: {{ order_id }}</p>
+                            <p>Số tiền: {{ amount }}</p>
+                            <p>Nội dung thanh toán: {{ order_desc }}</p>
+                            <p>vnp_TransactionNo:{{ vnp_TransactionNo }}</p>
+                            {% if vnp_ResponseCode == '00' %}
+                                <p>vnp_ResponseCode: <b style="color:green">{{ vnp_ResponseCode }} -Thành công</b> </p>
+                            {% else %}
+                                <p>vnp_ResponseCode: <b style="color:#d03131">{{ vnp_ResponseCode }} - Lỗi</b></p>
+                            {% endif %}
+                            {% if msg %}
+                                <p class="alert-warning"> {{ msg }}</p>
+                            {% endif %}
+                            <div class="button-container">
+                                <a href="{% url 'payment' %}" class="effect submit-button">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <input type="submit" value ="Trở lại">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 px-0">
+                        {% if vnp_ResponseCode == '00' %}
+                            <img src="{% static 'homepage/images/payment_successful.png' %}">
+                        {% else %}
+                            <img src="{% static 'homepage/images/payment_erorr.png' %}">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-12 sub-footer"></div>
+            </div>
+{% endblock %}
+
+{% block jsblock %}
+    <script type="text/javascript">
+        $("#btnPopup").click(function () {
+            var postData = $("#frmCreateOrder").serialize();
+            var submitUrl = $("#frmCreateOrder").attr("action");
+            $.ajax({
+                type: "POST",
+                url: submitUrl,
+                data: postData,
+                dataType: 'JSON',
+                success: function (x) {
+                    if (x.code === '00') {
+                        vnpay.open({width: 480, height: 600, url: x.data});
+                        return false;
+                    } else {
+                        alert(x.Message);
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+    <script src ="{% static 'homepage/js/payment.js' %}"></script>
+{% endblock %}
+

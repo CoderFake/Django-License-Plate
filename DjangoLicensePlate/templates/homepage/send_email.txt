@@ -1,0 +1,7 @@
+{% autoescape off %}
+Xin chào {{ user.username }}!
+Chúng tôi nhận được phản hồi cập nhật mật khẩu từ bạn, click đường dẫn dưới để thực hiện:
+{{protocol}}://{{domain}}{% url 'reset_password' uidb64=uid token=token %}
+Tên đăng nhập của bạn: {{ user.username }}
+Trân trọng!
+{% endautoescape off %}

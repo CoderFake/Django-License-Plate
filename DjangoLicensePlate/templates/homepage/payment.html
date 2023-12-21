@@ -1,0 +1,206 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block cssblock %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="VNPAY">
+    <link rel="stylesheet" type="text/css" href="https://pay.vnpay.vn/lib/vnpay/vnpay.css">
+    <link rel="stylesheet" type="text/css" href="{% static "homepage/styles/payment.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if result == "" %}
+            <h2 class="col-lg-12 text-center"> THANH TOÁN VÉ THÁNG </h2>
+            <div class ="row" style="width:100%;">
+                <div class="col-lg-8 d-flex justify-content-center align-items-center px-0" >
+                    <form action="{% url "payment" %}" id="create_form" method="post">
+                        {% csrf_token %}
+                         <div class="messages">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class ="notice">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="pay-form">
+                                    <label for="license_plate">Nhập biển số (Ví dụ: 30A12345)</label>
+                                    <input class="form-control" id="license_plate" name="license_plate" value=""/>
+                                </div>
+                                <div class="pay-form">
+                                    <label for="order_desc">Nội dung thanh toán</label>
+                                    <input class="form-control"  id="order_desc" name="order_desc" value ="Thanh toan ve thang {{ month }}: {% now "Y-m-d H:i:s" %}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pay-form">
+                                    <label for="amount">Số tiền</label>
+                                    <input class="form-control" id="amount"
+                                           name="amount" type="text" readonly value="{{ amount }}"/>
+                                </div>
+                                <div class="pay-form">
+                                    <label for="order_id">Mã hóa đơn</label>
+                                    <input class="form-control" id="order_id"
+                                           name="order_id" type="text" readonly value="{% now "YmdHis" %}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="pay-form">
+                                    <label for="bank_code">Ngân hàng</label>
+                                    <select name="bank_code" id="bank_code" class="form-control">
+                                        <option value="">Không chọn</option>
+                                        <option value="NCB"> Ngân hàng NCB</option>
+                                        <option value="AGRIBANK"> Ngân hàng Agribank</option>
+                                        <option value="SCB"> Ngân hàng SCB</option>
+                                        <option value="SACOMBANK">Ngân hàng SacomBank</option>
+                                        <option value="EXIMBANK"> Ngân hàng EximBank</option>
+                                        <option value="MSBANK"> Ngân hàng MSBANK</option>
+                                        <option value="NAMABANK"> Ngân hàng NamABank</option>
+                                        <option value="VNMART"> Ví điện tử VnMart</option>
+                                        <option value="VIETINBANK">Ngân hàng Vietinbank</option>
+                                        <option value="VIETCOMBANK"> Ngân hàng VCB</option>
+                                        <option value="HDBANK">Ngân hàng HDBank</option>
+                                        <option value="DONGABANK"> Ngân hàng Dong A</option>
+                                        <option value="TPBANK"> Ngân hàng TPBank</option>
+                                        <option value="OJB"> Ngân hàng OceanBank</option>
+                                        <option value="BIDV"> Ngân hàng BIDV</option>
+                                        <option value="TECHCOMBANK"> Ngân hàng Techcombank</option>
+                                        <option value="VPBANK"> Ngân hàng VPBank</option>
+                                        <option value="MBBANK"> Ngân hàng MBBank</option>
+                                        <option value="ACB"> Ngân hàng ACB</option>
+                                        <option value="OCB"> Ngân hàng OCB</option>
+                                        <option value="IVB"> Ngân hàng IVB</option>
+                                        <option value="VISA"> Thanh toán qua VISA/MASTER</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pay-form">
+                                    <label for="language">Ngôn ngữ</label>
+                                    <select name="language" id="language" class="form-control">
+                                        <option value="vn">Tiếng Việt</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-container">
+                            <a href="" class="effect submit-button">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <input type="submit" value ="Thanh toán">
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4 px-0">
+                    <img src="{% static 'homepage/images/vnpay.webp' %}">
+                </div>
+            </div>
+            <div class="col-lg-12 sub-footer"></div>
+        {% else %}
+            <a href="{% url 'payment_return' %}"></a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block jsblock %}
+    <script type="text/javascript">
+        $("#btnPopup").click(function () {
+            var postData = $("#frmCreateOrder").serialize();
+            var submitUrl = $("#frmCreateOrder").attr("action");
+            $.ajax({
+                type: "POST",
+                url: submitUrl,
+                data: postData,
+                dataType: 'JSON',
+                success: function (x) {
+                    if (x.code === '00') {
+                        vnpay.open({width: 480, height: 600, url: x.data});
+                        return false;
+                    } else {
+                        alert(x.Message);
+                    }
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}
+
+{#<div class="payment-box">#}
+{#            <h2>THANH TOÁN VÉ THÁNG {{ month }}</h2>#}
+{#            <form action="{% url "payment" %}" id="create_form" method="post">#}
+{#                {% csrf_token %}#}
+{#                <div class="pay-form">#}
+{#                    <label for="license_plate">Nhập biển số</label>#}
+{#                    <input class="form-control" id="license_plate" name="license_plate" type="text"/>#}
+{#                </div>#}
+{#                <div class="pay-form">#}
+{#                    <label for="order_id">Mã hóa đơn</label>#}
+{#                    <input class="form-control" id="order_id"#}
+{#                           name="order_id" type="text" readonly value="{% now "YmdHis" %}"/>#}
+{#                </div>#}
+{#                <div class="pay-form">#}
+{#                     <label for="amount">Số tiền</label>#}
+{#                    <input class="form-control" id="amount"#}
+{#                           name="amount" type="number" readonly value="1000000"/>#}
+{#                </div>#}
+{#                <div class="pay-form">#}
+{#                     <label for="order_desc">Nội dung thanh toán</label>#}
+{#                    <input class="form-control"  id="order_desc" name="order_desc" value ="Thanh toan ve thang {{ month }}: {% now "Y-m-d H:i:s" %}"/>#}
+{#                </div>#}
+{#                <div class="pay-form">#}
+{#                    <label for="bank_code">Ngân hàng</label>#}
+{#                    <select name="bank_code" id="bank_code" class="form-control">#}
+{#                        <option value="">Không chọn</option>#}
+{#                        <option value="NCB"> Ngân hàng NCB</option>#}
+{#                        <option value="AGRIBANK"> Ngân hàng Agribank</option>#}
+{#                        <option value="SCB"> Ngân hàng SCB</option>#}
+{#                        <option value="SACOMBANK">Ngân hàng SacomBank</option>#}
+{#                        <option value="EXIMBANK"> Ngân hàng EximBank</option>#}
+{#                        <option value="MSBANK"> Ngân hàng MSBANK</option>#}
+{#                        <option value="NAMABANK"> Ngân hàng NamABank</option>#}
+{#                        <option value="VNMART"> Ví điện tử VnMart</option>#}
+{#                        <option value="VIETINBANK">Ngân hàng Vietinbank</option>#}
+{#                        <option value="VIETCOMBANK"> Ngân hàng VCB</option>#}
+{#                        <option value="HDBANK">Ngân hàng HDBank</option>#}
+{#                        <option value="DONGABANK"> Ngân hàng Dong A</option>#}
+{#                        <option value="TPBANK"> Ngân hàng TPBank</option>#}
+{#                        <option value="OJB"> Ngân hàng OceanBank</option>#}
+{#                        <option value="BIDV"> Ngân hàng BIDV</option>#}
+{#                        <option value="TECHCOMBANK"> Ngân hàng Techcombank</option>#}
+{#                        <option value="VPBANK"> Ngân hàng VPBank</option>#}
+{#                        <option value="MBBANK"> Ngân hàng MBBank</option>#}
+{#                        <option value="ACB"> Ngân hàng ACB</option>#}
+{#                        <option value="OCB"> Ngân hàng OCB</option>#}
+{#                        <option value="IVB"> Ngân hàng IVB</option>#}
+{#                        <option value="VISA"> Thanh toán qua VISA/MASTER</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#                <div class="pay-form">#}
+{#                    <label for="language">Ngôn ngữ</label>#}
+{#                    <select name="language" id="language" class="form-control">#}
+{#                        <option value="vn">Tiếng Việt</option>#}
+{#                        <option value="en">English</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#                <div class="button-container">#}
+{#                    <a href="" class="effect submit-button">#}
+{#                        <span></span>#}
+{#                        <span></span>#}
+{#                        <span></span>#}
+{#                        <span></span>#}
+{#                        <input type="submit" value ="Thanh toán">#}
+{#                    </a>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}

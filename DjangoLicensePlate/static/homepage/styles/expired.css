@@ -1,0 +1,110 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+}
+
+.container {
+    height: 100vh;
+    padding: 70px 0px 20px 0px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .2);
+    color: #007bff;
+    align-items: center;
+}
+
+h2{
+    color:#fff;
+    background-color: #007bff;
+    padding: 10px 0;
+    margin: 50px 0 30px 0;
+}
+
+.form-group {
+    margin: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+}
+
+.searchButton {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
+.messages{
+    text-align: center;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 20px 0;
+}
+
+.table-container{
+    width:100%;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+
+th{
+    vertical-align: center;
+    text-align: center;
+    color: #007bff;
+}
+.hidden-input {
+    border: none;
+    background: transparent;
+}
+.pagination{
+    vertical-align: center ;
+}
+@media screen and (max-width: 992px) {
+    h2{
+        margin-top: 30px;
+        text-align: center;
+    }
+    .container{
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+}
+
+.page-item .post-link .text-nowrap {
+        animation: marquee 5s linear infinite;
+}
+@media screen and (max-width: 420px) {
+    .mb-4 {
+        max-width: 80px;
+    }
+    @keyframes marquee {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(-100%);
+        }
+    }
+}

@@ -1,0 +1,103 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block cssblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/styles/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form class ="edit-infor" action="{% url 'setting_info' %}" method="post" >
+            <div class ="row">
+                {% csrf_token %}
+                <div class="col-lg-12 user">
+                    <div class="row">
+                        <div class = "col-lg-3"></div>
+                        <div class = "col-lg-2 mx-left">
+                            <div class ="user-box">
+                                {% if request.user.is_active and request.user.is_staff %}
+                                    <img class="rounded-circle" src="{% static 'homepage/images/admin.png' %}">
+                                {% else %}
+                                    <img class="rounded-circle" src="{% static 'homepage/images/staff.jpg' %}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <h1><b> {{ first_name }} {{ last_name }}</b> ({{ user }})
+                                {% if request.user.is_active and request.user.is_staff %}
+                                    <p ><b>Chức vụ:</b> Quản trị viên</p>
+                                {% else %}
+                                    <p><b>Chức vụ:</b> Nhân viên</p>
+                            </h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="messages">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message == "1" %}
+                                    <div class="notice">success:Lưu thay đổi thành công!</div>
+                                {% else %}
+                                    <div class="notice">error:{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <h2><b>CHỈNH SỬA THÔNG TIN CÁ NHÂN</b></h2>
+                    <div class ="row">
+                        <div class="col-lg-6">
+                            <div class ="infor">
+                                <input type="password" class="form-control mx-auto" name="password"
+                                   placeholder="Mật khẩu cũ" value=""/>
+                                <input type="password" class="form-control mx-auto" name="new_password"
+                                   placeholder="Mật khẩu mới" value=""/>
+                                <input type="password" class="form-control mx-auto" name="confirm_password"
+                                   placeholder="Nhập lại mật khẩu mới" value=""/>
+                            </div>
+                            <div class="infor">
+                                <div class="demand mx-auto">
+                                    <p>-Mật khẩu tối thiểu 8 kí tự.</p>
+                                    <p>-Mật khẩu không chứa tên đăng nhập.</p>
+                                    <p>-Gồm các chữ cái thường, in hoa, số và kí tự đặc biệt.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class ="infor">
+                                <input type="text" class="form-control mx-auto" name="first_name"
+                                   placeholder="Họ" value="{{ first_name }}"/>
+                                <input type="text" class="form-control mx-auto" name="last_name"
+                                   placeholder ="Tên" value="{{ last_name }}"/>
+                                <input type="text" class="form-control mx-auto" name="email"
+                                   placeholder="Email" value="{{ email }}"/>
+                                <input type="text" class="form-control mx-auto" name="phone"
+                                   placeholder="Số điện thoại" value="{{ phone }}"/>
+                                <input type="text" class="form-control mx-auto" name="address"
+                                   placeholder="Địa chỉ" value="{{ address }}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="button-container">
+                        <a href="" class="effect submit-button">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <input type="submit" value ="Lưu thay đổi">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block jsblock %}
+    <script src ="{% static 'homepage/js/settings.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,471 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    height: 100vh;
+    padding: 70px 0px 20px 0px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .2);
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.user img {
+    width: 140px;
+    height: 140px;
+    padding: 4px;
+    background-color:#5161ce;
+}
+
+
+.edit-infor{
+    width:100%;
+}
+.container .user {
+    margin: 40px 0 0 0;
+    padding-bottom: 20px;
+    border-bottom: solid #0056ce;
+    border-width:2px ;
+    align-content:center;
+}
+.col-sm-4{
+    padding:0;
+}
+
+.container .infor input{
+    width: 80%;
+    font-size: 16px;
+    color: black;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #5161ce;
+    outline: none;
+    background: transparent;
+}
+
+.infor .demand{
+    width:80%;
+}
+
+.container .infor p{
+    color:#0056ce;
+    text-align: left;
+    padding-left:10px;
+    margin: 10px 0 10px 0;
+    font-size: 12px;
+}
+
+
+h1{
+    text-align:center;
+    font-size: 30px;
+    position:absolute;
+    z-index: 1;
+    top:50px;
+}
+h1 p {
+    text-align: left;
+    font-size:20px;
+}
+h2{
+    text-align:center;
+    font-size: 30px;
+    color: #5161ce;
+    margin: 20px auto 20px auto;
+}
+.check-connect{
+	width:100%;
+    height: 60px;
+	display: flex;
+	justify-content: center;
+    margin-bottom: 10px;
+	align-items: center;
+}
+#loading {
+	place-items: center;
+}
+.check-connect.success{
+    color:green;
+}
+.check-connect.error{
+    color: #E24D4C;
+}
+
+.form-control {
+    font-size: 16px;
+    width:80%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.form-control:focus {
+    border-color: #007bff;
+}
+
+#loading {
+    width: 48px;
+    height: 48px;
+    margin: 10px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 2px solid #5161ce;
+    border-left-color: transparent;
+    animation: rot 1s infinite linear;
+}
+.hidden{
+    display: none;
+}
+
+@keyframes rot {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.camera-name{
+    width:80%;
+    display:flex;
+    padding: 10px 0 10px 10%;
+    align-items: center;
+    color: #007bff;
+}
+
+/* 5 */
+button {
+  margin: 20px;
+}
+.check{
+	position:relative;
+	width: 100%;
+	height: 100px;
+	display:flex;
+	align-content:center;
+	align-items:center;
+}
+.custom-btn {
+    width: 150px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: absolute;
+	left:10%;
+    display: inline-block;
+	margin: 0;
+    outline: none;
+}
+.btn-5 {
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+    background: #007bff;
+}
+.btn-5:hover {
+    color: #007bff;
+    background: transparent;
+    box-shadow:none;
+}
+.btn-5:before,
+.btn-5:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #007bff;
+    box-shadow:
+    -1px -1px 5px 0px #fff,
+    7px 7px 20px 0px #0003,
+    4px 4px 5px 0px #0002;
+    transition:300ms ease all;
+}
+.btn-5:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+}
+.btn-5:hover:before,
+.btn-5:hover:after{
+    width:100%;
+    transition:800ms ease all;
+}
+
+.payment .col-lg-12 {
+    margin: 20px auto;
+}
+.payment .text{
+	width: 80%;
+	padding-left: 10%;
+}
+.payment .sub-title{
+	text-transform: uppercase;
+    color: #5161ce;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.payment .form-control{
+    width: 80%;
+    border: none;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.pt {
+    width:80%;
+    pading: 0 10%;
+}
+
+input[type=range] {
+	-webkit-appearance: none;
+	margin: 20px 0;
+	width: 100%;
+}
+input[type=range]:focus {
+	outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 4px;
+	cursor: pointer;
+	animate: 0.2s;
+	background: #03a9f4;
+	border-radius: 25px;
+}
+input[type=range]::-webkit-slider-thumb {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 0 4px 0 rgba(0,0,0, 1);
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -8px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+	background: #03a9f4;
+}
+.range-wrap{
+	width: 80%;
+	position: relative;
+	top: 40px;
+}
+.range-value{
+	position: absolute;
+	top: -50%;
+}
+.range-value span{
+	width: 60px;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	background: #03a9f4;
+	color: #fff;
+	font-size: 12px;
+	display: block;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0);
+	border-radius: 6px;
+}
+.range-value span:before{
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-top: 10px solid #03a9f4;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	margin-top: -1px;
+}
+
+.edit-infor .button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+.edit-infor .button-container a {
+    position: relative;
+    display: inline-block;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 20px;
+    letter-spacing: 4px;
+}
+.container a input[type="submit"] {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    letter-spacing: 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #007bff;
+}
+
+.edit-infor .effect:hover {
+    background: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #B5EBF8FF, 0 0 10px #B5EBF8FF, 0 0 15px #B5EBF8FF, 0 0 20px #B5EBF8FF;
+}
+
+.edit-infor a span {
+    position: absolute;
+    display: block;
+}
+
+.edit-infor a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #007bff);
+    animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+    0% {
+        left: -100%;
+    }
+    50%, 100% {
+        left: 100%;
+    }
+}
+
+.edit-infor a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #007bff);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: .25s;
+}
+
+@keyframes btn-anim2 {
+    0% {
+        top: -100%;
+    }
+    50%, 100% {
+        top: 100%;
+    }
+}
+
+.edit-infor a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #007bff);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: .5s;
+}
+
+@keyframes btn-anim3 {
+    0% {
+        right: -100%;
+    }
+    50%, 100% {
+        right: 100%;
+    }
+}
+
+.edit-infor a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #007bff);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: .75s;
+}
+
+@keyframes btn-anim4 {
+    0% {
+        bottom: -100%;
+    }
+    50%, 100% {
+        bottom: 100%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    h1{
+        position:unset;
+        text-align: center;
+    }
+    .user img {
+        display: block;
+        margin: 0 auto 10px auto;
+    }
+    h1 p{
+        text-align: center;
+    }
+	.custom-btn{
+		left:50%;
+		transform: translateX(-50%)
+	}
+}
+@media screen and (max-width: 767px) {
+	.payment .text{
+		position:relative;
+		width: 80%;
+		left: 10%;
+	}
+	.payment .form-control{
+        position:relative;
+		width: 80%;
+		left: 10%;
+		margin-bottom: 30px;
+    }
+	.range-wrap {
+		position:relative;
+		width: 80%;
+		left:10%;
+		top: 10px;
+
+	}
+
+}
+@media screen and (max-width: 420px) {
+   .container h2{
+       padding: 0 20px;
+       font-size: 24px;
+   }
+
+}

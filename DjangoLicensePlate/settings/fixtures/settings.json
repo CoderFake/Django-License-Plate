@@ -1,0 +1,16 @@
+[
+  {
+    "model": "settings.editinfor",
+    "pk": 1,
+    "fields": {
+            "rtsp_in": "0",
+            "rtsp_out": "0",
+            "rtsp_zone": "0",
+            "month_price": 1000000,
+            "day_price1": 20000,
+            "day_price2": 30000,
+            "time_day1": 6,
+            "time_day2": 18
+        }
+  }
+]

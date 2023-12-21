@@ -1,0 +1,148 @@
+{% extends 'homepage/base.html' %}
+{% load static %}
+
+{% block cssblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/styles/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form class ="edit-infor" action="{% url 'payment_setting' %}" method="post" >
+            <div class ="row">
+                {% csrf_token %}
+                <div class="col-lg-12 user">
+                    <div class="row">
+                        <div class = "col-lg-3"></div>
+                        <div class = "col-lg-2 mx-left">
+                            <div class ="user-box">
+                                {% if request.user.is_active and request.user.is_staff %}
+                                    <img class="rounded-circle" src="{% static 'homepage/images/admin.png' %}">
+                                {% else %}
+                                    <img class="rounded-circle" src="{% static 'homepage/images/staff.jpg' %}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <h1><b> {{ first_name }} {{ last_name }}</b> ({{ user }})
+                                {% if request.user.is_active and request.user.is_staff %}
+                                    <p ><b>Chức vụ:</b> Quản trị viên</p>
+                                {% else %}
+                                    <p><b>Chức vụ:</b> Nhân viên</p>
+                            </h1>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="messages">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message == "1" %}
+                                    <div class="notice">success:Lưu thay đổi thành công!</div>
+                                {% else %}
+                                    <div class="notice">error:{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-12 payment">
+                    <h2><b>CÀI ĐẶT THANH TOÁN</b></h2>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class ="sub-title"><label>Giá vé bãi đỗ xe</label></div>
+                                </div>
+                                <div class="col-md-6 pt">
+                                    <div class ="text"><label>Giá vé tháng:</label></div>
+                                    <input class="form-control mx-auto" type="text" id="month_price_input" readonly value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="month_price_rangeV"></div>
+                                        <input id="month_price_range" type="range" name="month_price" min="500000" max="3000000" value="{{ month_price }}" step="100000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-6 pt">
+                                    <div class ="text"><label>Giá vé ngày:</label></div>
+                                    <input class="form-control mx-auto" type="text" id="day_price1_input" readonly value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="day_price1_rangeV"></div>
+                                        <input id="day_price1_range" type="range" name="day_price1" min="0" max="100000" value="{{ day_price1 }}" step="5000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-6 pt">
+                                    <div class ="text"><label>Giá vé đêm:</label></div>
+                                    <input class="form-control mx-auto" type="text" id="day_price2_input" readonly value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="day_price2_rangeV"></div>
+                                        <input id="day_price2_range" type="range" name="day_price2" min="0" max="100000" value="{{ day_price2 }}" step="5000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class ="sub-title"><label>Thời gian tính vé ngày</label></div>
+                                </div>
+                                <div class="col-md-6 pt">
+                                    <div class ="text"><label>Từ:</label></div>
+                                    <input class="form-control mx-auto" type="text" id="time_day1_input" readonly value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="time_day1_rangeV"></div>
+                                        <input id="time_day1_range" type="range" name="time_day1" min="0" max="11" value="{{ time_day1 }}" step="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-md-6 pt">
+                                    <div class ="text"><label>Đến:</label></div>
+                                    <input class="form-control mx-auto" type="text" id="time_day2_input" readonly value="">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="range-wrap">
+                                        <div class="range-value" id="time_day2_rangeV"></div>
+                                        <input id="time_day2_range" type="range" name="time_day2" min="12" max="23" value="{{ time_day2 }}" step="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="button-container">
+                        <a href="" class="effect submit-button">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <input type="submit" value ="Lưu thay đổi">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block jsblock %}
+    <script src ="{% static 'homepage/js/settings.js' %}"></script>
+{% endblock %}
