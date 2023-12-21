@@ -88,7 +88,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "licenseplate",
         "USER": "admin",
-        "PASSWORD": "Admin2202",
+        "PASSWORD": "ẩn ròi",
         "HOST": "licenseplate.cfakvmwv88sn.ap-southeast-2.rds.amazonaws.com",
         "PORT": 3306
     }
