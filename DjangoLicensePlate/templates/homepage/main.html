@@ -36,10 +36,35 @@
                     <div class="col-lg-12 infor">
                         <h1>Tìm kiếm thông tin xe:</h1>
                         <div class="search">
-                            <input type="text" placeholder=" Nhập biển số">
-                            <input type="submit" value="Tìm kiếm">
+                            <input type="text" name="find_plate" placeholder=" Nhập biển số">
+                            <input type="submit" name="find_infor" value="Tìm kiếm">
                         </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div class="table-container hid">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Biển số xe</th>
+                                        <th scope="col">Thời gian vào</th>
+                                        <th scope="col">Thời gian ra</th>
+                                        <th scope="col">Giá vé</th>
+                                        <th scope="col">Ảnh biển số</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td-plate"></td>
+                                        <td class="td-timein"></td>
+                                        <td class="td-timeout"></td>
+                                        <td class="td-price"></td>
+                                        <td class="td-img"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 error-plate hid">Không có bản ghi!</div>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -237,6 +262,37 @@
             socket.onclose = function(e) {
                 console.error('WebSocket closed unexpectedly');
             };
+            $('input[name="find_plate"]').on('click', function (){
+                if(!$('.table-container').hasClass('hid')) {
+                    $('.table-container').addClass('hid');
+                }
+                if(!$('.error-plate').hasClass('hid'))
+                    $('.error-plate').addClass('hid');
+            });
+            $('input[name="find_infor"]').on('click', function (){
+                $.ajax({
+                    url: '{% url 'find_infor' %}',
+                    type: 'POST',
+                    data: {
+                        'licenseplate': $('input[name="find_plate"]').val()
+                    },
+                    success: function(response) {
+                        if($('.table-container').hasClass('hid'))
+                            $('.table-container').removeClass('hid');
+                        if(response.car_plate) {
+                            $('.td-plate').text(response.car_plate);
+                            $('.td-timein').text(response.time_car_in);
+                            $('.td-timeout').text(response.time_car_out);
+                            $('.td-price').text(response.car_price);
+                            $('.td-img').html('<img src="data:image/png;base64,' + response.blob_img + '" alt="Plate Image">');
+                        }
+                        else $('.error-plate').removeClass('hid');
+                    },
+                    error: function(error) {
+                        console.error('Ajax request failed:', error);
+                    }
+                });
+            });
         });
     </script>
     <script src ="{% static 'homepage/js/main.js' %}"></script>
