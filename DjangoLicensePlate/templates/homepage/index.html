@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content %}
+    <div class="parkingspace">
+        <input type="text" name="empty" readonly>
+    </div>
     <div class="page">
       <div class="welcome-container">
         <div class="logo-container">
@@ -39,8 +42,7 @@
                         type: 'POST',
                         success: function(response) {
                             console.log(response);
-                            $('input[name="car_in"]').val(response.car_in);
-                            $('input[name="empty"]').val(16-response.car_in);
+                            $('input[name="empty"]').val("Số lượng vị trí trống hiện tại là: " + (16-response.car_in));
                         },
                         error: function(error) {
                             console.error('Ajax request failed:', error);
