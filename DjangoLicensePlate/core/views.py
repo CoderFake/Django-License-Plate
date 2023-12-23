@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
-from camera.views import scan_plate, parking_space
+from camera.views import scan_plate, parking_space, find_plate
 from django.views.decorators.csrf import csrf_exempt
 import json
 from PIL import Image
@@ -20,7 +20,7 @@ def save_screen_size(request):
     if request.method == 'POST':
         width = request.POST.get('width')
         height = request.POST.get('height')
-        if width < 992 or height < 760:
+        if width < 1300 or height < 760:
             return False
         return True
 
@@ -28,6 +28,12 @@ def save_screen_size(request):
 def gate(request):
     if request.method == 'POST':
         response_data = scan_plate(int(request.POST.get('gate')))
+        return JsonResponse(json.loads(response_data))
+
+@csrf_exempt
+def find_infor(request):
+    if request.method == 'POST':
+        response_data = find_plate(request.POST.get('licenseplate'))
         return JsonResponse(json.loads(response_data))
 
 @csrf_exempt
